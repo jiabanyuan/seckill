@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
+<head>
+    <!--jq-->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--jq倒计时插件-->
+    <script src="https://cdn.bootcss.com/jquery.countdown/2.2.0/jquery.countdown.min.js"></script>
+    <meta charset="UTF-8"/>
+    <title>Seckill Page</title>
+</head>
+<body>
+<div class="center-block" style="margin-left: 25%; margin-right: 25%">
+    <h1 align="center">Seckill Page</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading" style="font-size: 20px;font-weight: bold">商品列表</div>
+    </div>
+    <p id="isOpen" th:text="${isOpen}" th:hidden="true"/>
+    <div class="row">
+        <div th:each="item:${itemList}" class="col-sm-6 col-md-6">
+            <div class="thumbnail">
+                <img style="height:300px;" th:src="${item.imgPath}">
+                <div class="caption">
+                    <!-- 隐藏域-->
+                    <p th:id="${item.id} +'_id'" th:text="${item.id}" th:hidden="true"/>
+                    <p th:id="${item.id} +'_md5'" th:text="${item.md5}" th:hidden="true"/>
+                    <p th:id="${item.id} +'_now'" th:text="${#dates.format(item.now,'yyyy-MM-dd HH:mm:ss')}" th:hidden="true"/>
+                    <p th:id="${item.id} +'_startDate'" th:text="${#dates.format(item.startDate,'yyyy-MM-dd HH:mm:ss')}" th:hidden="true"/>
+                    <p th:id="${item.id} +'_endDate'" th:text="${#dates.format(item.endDate,'yyyy-MM-dd HH:mm:ss')}" th:hidden="true"/>
+                    <p th:id="${item.id} +'_state'" th:text="${item.seckillState}" th:hidden="true"/>
+                    <!-- 隐藏域-->
+                    <h4 style="height:20px" th:text="${item.itemName}"/>
+                    <h5 style="height:20px;color: red; font-weight: bold" th:text="'￥'+${item.price}"/>
+                    <p style="height:30px" th:text="${item.itemDesc}"/>
+                    <p th:id="${item.id} +'_stock'" style="height:15px" th:text="'库存：'+${item.stock}"></p>
+                    <!--秒杀倒计时-->
+                    <p th:hidden="${item.seckillState != 0}" th:id="${item.id} +'_start_time'" style="height:20px;font-weight: bold;color: red"></p>
+                    <p th:hidden="${item.seckillState == 0}" th:id="${item.id} +'_end_time'" style="height:20px;font-weight: bold;color: red"></p>
+                    <!--秒杀按钮-->
+                    <p th:if="${item.seckillState == -1}"><a th:id="${item.id} +'_btn_a'" href="javascript:;" class="btn btn-primary disabled" role="button" th:onclick="'javascript:seckill('+${item.id}+')'"><spen th:id="${item.id} +'_btn_spen'" class="glyphicon glyphicon-shopping-cart"> 已结束</spen></a></p>
+                    <p th:if="${item.seckillState == 0}"><a th:id="${item.id} +'_btn_a'" href="javascript:;" class="btn btn-primary disabled" role="button" th:onclick="'javascript:seckill('+${item.id}+')'"><spen th:id="${item.id} +'_btn_spen'" class="glyphicon glyphicon-shopping-cart"> 未开始</spen></a></p>
+                    <p th:if="${item.seckillState == 1}"><a th:id="${item.id} +'_btn_a'" href="javascript:;" class="btn btn-primary"  role="button" th:onclick="'javascript:seckill('+${item.id}+')'"><spen th:id="${item.id} +'_btn_spen'" class="glyphicon glyphicon-shopping-cart"> 秒杀</spen></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</table>
+<script type="text/javascript" src="/js/seckill.js"></script>
+</body>
+
+</html>

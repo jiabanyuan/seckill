@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dwj.seckill.dao.SeckillDao">
+
+    <resultMap id="seckillItemMap" type="com.dwj.seckill.dao.entity.SeckillItem">
+        <id property="id" column="id"/>
+        <result property="imgPath" column="img_path"/>
+        <result property="itemName" column="item_name"/>
+        <result property="itemDesc" column="item_desc"/>
+        <result property="price" column="price"/>
+        <result property="stock" column="stock"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+    </resultMap>
+
+    <select id="list" resultMap="seckillItemMap">
+        SELECT `id`,`img_path`,`item_name`,`item_desc`,`price`,`stock`,`start_date`,`end_date` FROM seckill_item
+    </select>
+
+    <update id="reduceStock">
+        UPDATE seckill_item SET `stock` = `stock` - #{num} WHERE `id` = #{id} AND `stock` > 0
+    </update>
+
+    <update id="updateStock">
+        UPDATE seckill_item SET `stock` = #{stock} WHERE `id` = #{id}
+    </update>
+
+</mapper>
